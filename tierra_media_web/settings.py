@@ -38,6 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'inicio.apps.InicioConfig',
+    'personajes.apps.PersonajesConfig',
+    'facciones.apps.FaccionesConfig',
+    'relaciones.apps.RelacionesConfig',
+    'localizaciones.apps.LocalizacionesConfig',
+    'equipamiento.apps.EquipamientoConfig',
+    'batalla.apps.BatallaConfig',
 ]
 
 MIDDLEWARE = [
