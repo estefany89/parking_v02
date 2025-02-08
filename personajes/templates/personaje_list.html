@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% if personaje_list %}
+    <h1>Lista de personajes</h1>
+    <ul>
+    {% for personaje in personaje_list %}
+        <li><h2>{{ personaje.nombre }}</h2></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No hay personajes registrados</p>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Detalles de {{ personaje.nombre }}</h1>
+    <img src="{{ personaje.imagen.url }}" alt="Imagen de {{ personaje.nombre }}">
+    <p><strong>Localización:</strong> {{ personaje.localizacion }}</p>
+    <p><strong>Facción:</strong> {{ personaje.faccion }}</p>
+    <p><strong>Arma equipada:</strong> {{ personaje.arma_equipada|default:'Ninguna' }}</p>
+    <p><strong>Armadura equipada:</strong> {{ personaje.armadura_equipada|default:'Ninguna' }}</p>
+    <p><strong>Inventario:</strong></p>
+    <ul>
+        {% for item in personaje.inventario.items.all %}
+            <li>{{ item.item_instancia }}</li>
+        {% empty %}
+            <li>Inventario vacío</li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}
