@@ -1,6 +1,9 @@
 from django.db import models
 
-# Create your models here.
-
 class Localizacion(models.Model):
-    nombre = models.CharField(max_length=100)
+    """Modelo para representar una localización en el juego."""
+    nombre = models.CharField(max_length=100, unique=True)
+    descripcion = models.TextField()
+
+    def __str__(self):
+        return self.nombre

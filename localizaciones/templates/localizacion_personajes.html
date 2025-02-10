@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>Lista de personajes de {{ localizacion.name }}</h1>
+{% for personaje in personajes %}
+	<li>{{ personaje.nombre }}</li>
+{% endfor %}
+
+{% endblock %}
