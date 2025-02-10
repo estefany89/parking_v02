@@ -12,7 +12,7 @@ class Personaje(models.Model):
     faccion = models.ForeignKey(Faccion, on_delete=models.SET_NULL, null=True)
     arma_equipada = models.ForeignKey(Arma, on_delete=models.SET_NULL, null=True, blank=True)
     armadura_equipada = models.ForeignKey(Armadura, on_delete=models.SET_NULL, null=True, blank=True)
-    imagen = models.ImageField(upload_to='media/', null=True, blank=True)
+    imagen = models.ImageField(upload_to='personajes/', null=True, blank=True)
 
     def save(self, *args, **kwargs):
         """Redimensiona la imagen antes de guardar el personaje."""

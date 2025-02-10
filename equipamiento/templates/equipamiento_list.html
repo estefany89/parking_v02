@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de equipamiento</title>
+</head>
+<body>
+   <h1>Lista de Armas</h1>
+    <ul>
+        {% for arma in armas %}
+            <li>
+                <strong>{{ arma.nombre }}</strong> ({{ arma.get_tipo_display }}) - Daño Base: {{ arma.dano_base }}
+                {% if arma.es_unica %}<span> - Única</span>{% endif %}
+                <h2>Ataques:</h2>
+                <ul>
+                    {% for ataque in arma.ataques.all %}
+                        <li>{{ ataque.nombre }} - {{ ataque.get_tipo_ataque_display }} ({{ ataque.dano }} daño)</li>
+                    {% empty %}
+                        <li>Esta arma no tiene ataques.</li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% empty %}
+            <li>No hay armas disponibles.</li>
+        {% endfor %}
+    </ul>
+
+    <h1>Lista de Armaduras</h1>
+    <ul>
+        {% for armadura in armaduras %}
+            <li><strong>{{ armadura.nombre }}</strong> - Defensa Física: {{ armadura.defensa_fisica }}, Defensa Mágica: {{ armadura.defensa_magica }}</li>
+        {% empty %}
+            <li>No hay armaduras disponibles.</li>
+        {% endfor %}
+    </ul>
+
+</body>
+</html>
