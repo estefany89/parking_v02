@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add armadura</title>
+     <style>
+        .alert { padding: 10px; margin-bottom: 15px; border-radius: 5px; }
+        .alert-success { background-color: #d4edda; color: #155724; }
+        .alert-error { background-color: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+<h1>Equipar Armadura</h1>
+
+    <!-- Mostrar mensajes -->
+    {% if messages %}
+        <div>
+            {% for message in messages %}
+                <div class="alert {% if message.tags == 'error' %}alert-error{% else %}alert-success{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <form action="{% url 'equipar_armadura' %}" method="post">
+        {% csrf_token %}
+
+        <label for="personaje">Seleccionar Personaje:</label>
+        <select id="personaje" name="personaje" required>
+            {% for personaje in personajes %}
+                <option value="{{ personaje.id }}">{{ personaje.nombre }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="objeto">Seleccionar Armadura:</label>
+        <select id="objeto" name="objeto" required>
+            {% for armadura in armaduras %}
+                <option value="{{ armadura.id }}">{{ armadura.nombre }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">Equipar</button>
+    </form>
+
+</body>
+</html>
