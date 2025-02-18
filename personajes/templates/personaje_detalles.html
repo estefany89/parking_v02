@@ -1,8 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>Detalles de {{ personaje.nombre }}</h1>
-    <img src="{{ personaje.imagen.url }}" alt="Imagen de {{ personaje.nombre }}">
+<h1>Detalles de {{ personaje.nombre }}</h1>g
     <p><strong>Localización:</strong> {{ personaje.localizacion }}</p>
     <p><strong>Facción:</strong> {{ personaje.faccion }}</p>
     <p><strong>Arma equipada:</strong> {{ personaje.arma_equipada|default:'Ninguna' }}</p>

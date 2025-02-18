@@ -5,7 +5,7 @@
     <h1>Lista de personajes</h1>
     <ul>
     {% for personaje in personaje_list %}
-        <li><h2>{{ personaje.nombre }}</h2></li>
+        <li><img src="{{ personaje.imagen.url }}" alt="{{ personaje.nombre }}"><h2><a href="{% url 'personajes:personaje_detalles' personaje.id %}">{{ personaje.nombre }}</a></h2></li>
     {% endfor %}
     </ul>
 {% else %}
