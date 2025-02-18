@@ -1,17 +1,19 @@
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
-from django.dispatch import receiver
-from equipamiento.models import Arma, Armadura, ItemInstancia
+from equipamiento.models import Arma, Armadura, Consumible
 from facciones.models import Faccion
 from localizaciones.models import Localizacion
 from PIL import Image
+from django.core.exceptions import ValidationError
+from django.contrib.contenttypes.fields import GenericForeignKey
 
 
 class Personaje(models.Model):
     nombre = models.CharField(max_length=100)
     localizacion = models.ForeignKey(Localizacion, on_delete=models.SET_NULL, null=True)
     faccion = models.ForeignKey(Faccion, on_delete=models.SET_NULL, null=True)
-    arma_equipada = models.ForeignKey(Arma, on_delete=models.SET_NULL, null=True, blank=True)
-    armadura_equipada = models.ForeignKey(Armadura, on_delete=models.SET_NULL, null=True, blank=True)
+    arma_equipada = models.ForeignKey(Arma, on_delete=models.SET_NULL, null=True, blank=True, default=None)
+    armadura_equipada = models.ForeignKey(Armadura, on_delete=models.SET_NULL, null=True, blank=True, default=None)
     imagen = models.ImageField(upload_to='personajes/', null=True, blank=True, default='personajes/default.jpg')
 
     def save(self, *args, **kwargs):
@@ -35,15 +37,21 @@ class Personaje(models.Model):
 
     def equipar_arma(self, arma):
         """Equipa un arma si el personaje la tiene en su inventario."""
-        if self.inventario.items.filter(item_instancia=arma).exists():
+        arma_ct = ContentType.objects.get_for_model(arma)
+        if self.inventario.items.filter(content_type=arma_ct, object_id=arma.id).exists():
             self.arma_equipada = arma
             self.save()
+        else:
+            raise ValidationError("No puedes equipar un arma que no está en tu inventario")
 
     def equipar_armadura(self, armadura):
         """Equipa una armadura si el personaje la tiene en su inventario."""
-        if self.inventario.items.filter(item_instancia=armadura).exists():
+        armadura_ct = ContentType.objects.get_for_model(armadura)
+        if self.inventario.items.filter(content_type=armadura_ct, object_id=armadura.id).exists():
             self.armadura_equipada = armadura
             self.save()
+        else:
+            raise ValidationError("No puedes equipar una armadura que no está en tu inventario")
 
     def desequipar_arma(self):
         """Desequipa el arma actual."""
@@ -59,16 +67,24 @@ class Personaje(models.Model):
         return self.nombre
 
 
+class InventarioItem(models.Model):
+    inventario = models.ForeignKey('Inventario', on_delete=models.CASCADE, related_name='items')
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    item = GenericForeignKey("content_type", "object_id")
+    cantidad = models.PositiveIntegerField(default=1)
+
+    def clean(self):
+        """Validar que el item instanciado sea un arma, armadura o consumible."""
+        if not isinstance(self.item, (Arma, Armadura, Consumible)):
+            raise ValidationError("Solo puedes guardar armas, armaduras y consumibles en el inventario")
+
+    def __str__(self):
+        return f"{self.cantidad}x {self.item}"
+
+
 class Inventario(models.Model):
     personaje = models.OneToOneField(Personaje, on_delete=models.CASCADE, related_name="inventario")
 
     def __str__(self):
         return f"Inventario de {self.personaje.nombre}"
-
-
-class InventarioItem(models.Model):
-    inventario = models.ForeignKey(Inventario, on_delete=models.CASCADE, related_name="items")
-    item_instancia = models.OneToOneField(ItemInstancia, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f"{self.item_instancia} en {self.inventario.personaje.nombre}"

@@ -1,46 +1,45 @@
 from django.contrib import admin
-from django.core.exceptions import ValidationError
+from django.utils.html import format_html
 from .models import Personaje, Inventario, InventarioItem
-from equipamiento.models import Arma, Armadura, ItemInstancia
+from equipamiento.models import Arma, Armadura, Consumible
+
 
 class InventarioItemInline(admin.TabularInline):
-    """Permite administrar los ítems del inventario directamente desde el personaje."""
     model = InventarioItem
     extra = 1
 
 
 @admin.register(Personaje)
 class PersonajeAdmin(admin.ModelAdmin):
-    """Admin para gestionar personajes y validar equipamiento."""
-    list_display = ("nombre", "localizacion", "faccion", "arma_equipada", "armadura_equipada")
-    search_fields = ("nombre", "faccion__nombre", "localizacion__nombre")
-    list_filter = ("faccion", "localizacion")
+    list_display = ('nombre', 'faccion', 'localizacion', 'mostrar_imagen')
+    list_filter = ('faccion', 'localizacion')
+    search_fields = ('nombre',)
+
+    def mostrar_imagen(self, obj):
+        if obj.imagen:
+            return format_html('<img src="{}" width="50" height="50" />', obj.imagen.url)
+        return "Sin imagen"
+
+    mostrar_imagen.short_description = 'Imagen'
+
+
+@admin.register(Inventario)
+class InventarioAdmin(admin.ModelAdmin):
+    list_display = ('personaje',)
     inlines = [InventarioItemInline]
 
-    def save_model(self, request, obj, form, change):
-        """Valida que el personaje solo equipe armas o armaduras que tiene en su inventario."""
-        errores = []
 
-        # Validar que el arma equipada esté en el inventario del personaje
-        if obj.arma_equipada:
-            if not InventarioItem.objects.filter(
-                inventario=obj.inventario,
-                item_instancia__content_type__model="arma",
-                item_instancia__object_id=obj.arma_equipada.id
-            ).exists():
-                errores.append(f"El personaje no tiene el arma {obj.arma_equipada} en su inventario.")
+@admin.register(InventarioItem)
+class InventarioItemAdmin(admin.ModelAdmin):
+    list_display = ('inventario', 'get_item_name', 'cantidad')
 
-        # Validar que la armadura equipada esté en el inventario del personaje
-        if obj.armadura_equipada:
-            if not InventarioItem.objects.filter(
-                inventario=obj.inventario,
-                item_instancia__content_type__model="armadura",
-                item_instancia__object_id=obj.armadura_equipada.id
-            ).exists():
-                errores.append(f"El personaje no tiene la armadura {obj.armadura_equipada} en su inventario.")
+    def get_item_name(self, obj):
+        if isinstance(obj.item, Arma):
+            return obj.item.nombre
+        elif isinstance(obj.item, Armadura):
+            return obj.item.nombre
+        elif isinstance(obj.item, Consumible):
+            return obj.item.tipo
+        return "Sin nombre"
 
-        # Si hay errores, lanzar una excepción ValidationError
-        if errores:
-            raise ValidationError(errores)
-
-        super().save_model(request, obj, form, change)
+    get_item_name.short_description = 'Item'
