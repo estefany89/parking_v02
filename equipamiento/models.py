@@ -31,11 +31,6 @@ class Ataque(models.Model):
     def __str__(self):
         return f"{self.nombre} - ({self.dano} daño)"
 
-    def clean(self):
-        """Asegura que cada arma tenga entre 1 y 4 ataques."""
-        if not (1 <= self.arma.ataques.count() <= 4):
-            raise ValidationError("Cada arma debe tener entre 1 y 4 ataques.")
-
 
 class Armadura(models.Model):
     nombre = models.CharField(max_length=100)

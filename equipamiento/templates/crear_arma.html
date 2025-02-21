@@ -1,10 +1,19 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+
 {% block content %}
-<h1>Crear una nueva arma</h1>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Guardar arma</button>
-    </form>
-    <a href="{% url 'equipamiento_list' %}">Volver a la lista de equipamiento</a>
+<h2>Crear Arma y Ataques</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <h3>Ataques</h3>
+    {{ formset.management_form }}
+    {% for form in formset %}
+        <div class="ataque-form">
+            {{ form.as_p }}
+        </div>
+    {% endfor %}
+
+    <button type="submit">Guardar</button>
+</form>
 {% endblock %}
