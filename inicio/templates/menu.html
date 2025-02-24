@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú Tierra Media</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .menu {
+            background-color: #333;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .menu a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+            width: 100%;
+        }
+        .menu a:hover {
+            background-color: #575757;
+        }
+    </style>
+</head>
+<body>
+    <div class="menu">
+        <h1>PERSONAJES</h1>
+        <a href="{% url 'personajes:crear_personaje' %}">Crear personaje</a>
+        <a href="{% url 'personajes:personaje_list' %}">Lista de personajes</a>
+        <h1>EQUIPAMIENTO</h1>
+        <a href="{% url 'equipamiento:crear_arma' %}">Crear arma</a>
+        <a href="{% url 'equipamiento:equipamiento_list' %}">Lista de objetos</a>
+        <h1>FACCIONES</h1>
+        <a href="{% url 'facciones:lista_facciones' %}">Lista de facciones</a>
+        <h1>BATALLA</h1>
+        <a href="{% url 'battle:character_select' %}">Iniciar una batalla</a>
+    </div>
+</body>
+</html>
