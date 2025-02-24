@@ -74,17 +74,17 @@ class BattleView(View):
             attack_id = request.POST.get('attack_id')
 
             if not attack_id:
-                return JsonResponse({'error': 'No attack selected'}, status=400)
+                return JsonResponse({'error': 'No has seleccionado ningún ataque'}, status=400)
 
             # Obtener el ataque seleccionado
             attack = Ataque.objects.get(id=attack_id)
 
             # Verificar que el ataque pertenece al arma del jugador
             if attack not in player.arma_equipada.ataques.all():
-                return JsonResponse({'error': 'Invalid attack'}, status=400)
+                return JsonResponse({'error': 'Ataque no válido'}, status=400)
 
         except ObjectDoesNotExist:
-            return JsonResponse({'error': 'Character or attack not found'}, status=404)
+            return JsonResponse({'error': 'Personaje o ataque no encontrado'}, status=404)
 
         battle_service = BattleService(player, machine)
         result = battle_service.player_attack(attack)

@@ -49,44 +49,48 @@
 
             <div class="row">
                 <div class="col-md-6">
-                    <h2 class="mb-3">Player Character</h2>
+                    <h2 class="mb-3">Personaje del jugador</h2>
                     {% for character in characters %}
-                        <div class="character-card" onclick="selectCharacter('player', {{ character.id }})">
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio"
-                                       name="player_character"
-                                       value="{{ character.id }}"
-                                       id="player_{{ character.id }}"
-                                       required>
-                                <label class="form-check-label" for="player_{{ character.id }}">
-                                    <h4>{{ character.nombre }}</h4>
-                                    <div class="weapon-info">
-                                        <i class="bi bi-sword"></i> Weapon: {{ character.arma_equipada.nombre }}
-                                    </div>
-                                </label>
+                        {% if character.arma_equipada is not Null %}
+                            <div class="character-card" onclick="selectCharacter('player', {{ character.id }})">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio"
+                                           name="player_character"
+                                           value="{{ character.id }}"
+                                           id="player_{{ character.id }}"
+                                           required>
+                                    <label class="form-check-label" for="player_{{ character.id }}">
+                                        <h4>{{ character.nombre }}</h4>
+                                        <div class="weapon-info">
+                                            <i class="bi bi-sword"></i> Arma: {{ character.arma_equipada.nombre }}
+                                        </div>
+                                    </label>
+                                </div>
                             </div>
-                        </div>
+                        {% endif %}
                     {% endfor %}
                 </div>
 
                 <div class="col-md-6">
-                    <h2 class="mb-3">Machine Character</h2>
+                    <h2 class="mb-3">Personaje de la máquina</h2>
                     {% for character in characters %}
-                        <div class="character-card" onclick="selectCharacter('machine', {{ character.id }})">
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio"
-                                       name="machine_character"
-                                       value="{{ character.id }}"
-                                       id="machine_{{ character.id }}"
-                                       required>
-                                <label class="form-check-label" for="machine_{{ character.id }}">
-                                    <h4>{{ character.nombre }}</h4>
-                                    <div class="weapon-info">
-                                        <i class="bi bi-sword"></i> Weapon: {{ character.arma_equipada.nombre }}
-                                    </div>
-                                </label>
+                        {% if character.arma_equipada is not Null %}
+                            <div class="character-card" onclick="selectCharacter('machine', {{ character.id }})">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio"
+                                           name="machine_character"
+                                           value="{{ character.id }}"
+                                           id="machine_{{ character.id }}"
+                                           required>
+                                    <label class="form-check-label" for="machine_{{ character.id }}">
+                                        <h4>{{ character.nombre }}</h4>
+                                        <div class="weapon-info">
+                                            <i class="bi bi-sword"></i> Arma: {{ character.arma_equipada.nombre }}
+                                        </div>
+                                    </label>
+                                </div>
                             </div>
-                        </div>
+                        {% endif %}
                     {% endfor %}
                 </div>
             </div>

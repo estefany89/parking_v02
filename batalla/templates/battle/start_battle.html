@@ -49,7 +49,7 @@
             <!-- HP Bars -->
             <div class="row mb-4">
                 <div class="col-md-6">
-                    <label class="form-label">Player HP</label>
+                    <label class="form-label">Vida del jugador</label>
                     <div class="progress">
                         <div class="progress-bar bg-success" role="progressbar" id="player-hp"
                              style="width: {{ player.hp|floatformat:0 }}%"
@@ -60,7 +60,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label">Machine HP</label>
+                    <label class="form-label">Vida de la máquina</label>
                     <div class="progress">
                         <div class="progress-bar bg-danger" role="progressbar" id="machine-hp"
                              style="width: {{ machine.hp|floatformat:0 }}%"
@@ -73,7 +73,7 @@
 
             <!-- Available Attacks -->
             <div class="attacks-container text-center">
-                <h3>Available Attacks</h3>
+                <h3>Ataques disponibles</h3>
                 <div class="row justify-content-center">
                     {% for attack in player_attacks %}
                         <div class="col-auto">
@@ -84,7 +84,7 @@
                                 <input type="hidden" name="attack_id" value="{{ attack.id }}">
                                 <button type="submit" class="btn btn-primary attack-button">
                                     {{ attack.nombre }}
-                                    <div class="attack-info">Damage: {{ attack.dano }}</div>
+                                    <div class="attack-info">Daño: {{ attack.dano }}</div>
                                 </button>
                             </form>
                         </div>
@@ -94,15 +94,15 @@
 
             <!-- Battle Log -->
             <div class="battle-log" id="battle-log">
-                <p class="text-center text-muted">Battle started! Choose your attack!</p>
+                <p class="text-center text-muted">Comienza la batalla! Selecciona tu ataque!</p>
             </div>
 
             <!-- Battle Status -->
             <div id="battle-status" class="text-center">
                 {% if winner %}
                     <div class="alert alert-success">
-                        <h3>Battle Ended!</h3>
-                        <p>Winner: {{ winner|title }}</p>
+                        <h3>Fin de la batalla!</h3>
+                        <p>Ganador: {{ winner|title }}</p>
                         <a href="{% url 'battle:character_select' %}" class="btn btn-primary mt-2">New Battle</a>
                     </div>
                 {% endif %}
@@ -118,20 +118,20 @@
 
             const response = JSON.parse(evt.detail.xhr.response);
 
-            // Update HP bars
+            // Actualizar barras de vida
             updateHP('player', response.player_hp);
             updateHP('machine', response.machine_hp);
 
-            // Add to battle log
+            // Añadir al div Battlelog
             addToBattleLog(`Player uses ${response.attack_name} and deals ${response.damage_dealt} damage!`);
             if (response.machine_damage_dealt) {
                 addToBattleLog(`Machine uses ${response.machine_attack_name} and deals ${response.machine_damage_dealt} damage!`);
             }
 
-            // Check for winner
+            // Mira si hay ganador
             if (response.winner) {
                 const winner = response.winner.charAt(0).toUpperCase() + response.winner.slice(1);
-                addToBattleLog(`Battle ended! ${winner} wins!`);
+                addToBattleLog(`Fin de la batalla! ${winner} es el ganador!`);
                 disableAttacks();
             }
         });

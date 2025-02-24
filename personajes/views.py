@@ -23,7 +23,7 @@ class PersonajeList(ListView):
 class CrearPersonajeView(FormView):
     template_name = "crear_personaje.html"
     form_class = PersonajeForm
-    success_url = reverse_lazy("personaje_list")
+    success_url = reverse_lazy("personajes:personaje_list")
 
     def form_valid(self, form):
         form.save()  # Guarda el personaje si el formulario es válido
