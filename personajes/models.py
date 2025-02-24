@@ -15,6 +15,7 @@ class Personaje(models.Model):
     arma_equipada = models.ForeignKey(Arma, on_delete=models.SET_NULL, null=True, blank=True, default=None)
     armadura_equipada = models.ForeignKey(Armadura, on_delete=models.SET_NULL, null=True, blank=True, default=None)
     imagen = models.ImageField(upload_to='personajes/', null=True, blank=True, default='personajes/default.jpg')
+    hp = models.IntegerField(default=100)
 
     def save(self, *args, **kwargs):
         """Redimensiona la imagen antes de guardar el personaje."""

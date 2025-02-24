@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'localizaciones.apps.LocalizacionesConfig',
     'equipamiento.apps.EquipamientoConfig',
     'batalla.apps.BatallaConfig',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
