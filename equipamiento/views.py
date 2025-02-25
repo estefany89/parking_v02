@@ -19,12 +19,12 @@ class EquiparArma(View):
         personajes = Personaje.objects.all()
         armas = []
 
-        # If a character is selected, show only weapons in their inventory
+        # Si se selecciona un personaje muestra solo las armas del inventario
         if personaje_id:
             try:
                 personaje = Personaje.objects.get(id=personaje_id)
                 arma_content_type = ContentType.objects.get_for_model(Arma)
-                # Get weapons from this character's inventory
+                # Obtengo las armas del inventario
                 arma_items = InventarioItem.objects.filter(
                     inventario=personaje.inventario,
                     content_type=arma_content_type
@@ -47,14 +47,14 @@ class EquiparArma(View):
         personaje = get_object_or_404(Personaje, id=personaje_id)
         arma = get_object_or_404(Arma, id=arma_id)
 
-        # Verify if the character has the weapon in their inventory
+        # Verifico si tiene el arma
         try:
             personaje.equipar_arma(arma)
             messages.success(request, f"{personaje.nombre} ha equipado {arma.nombre}.")
         except ValidationError as e:
             messages.error(request, str(e))
 
-        # Redirect back to the same view with the character pre-selected
+        # Redirect con el personaje preseleccionado
         return redirect(f"add_arma?personaje={personaje_id}")
 
 
@@ -66,12 +66,12 @@ class EquiparArmadura(View):
         personajes = Personaje.objects.all()
         armaduras = []
 
-        # If a character is selected, show only armor in their inventory
+        # Si selecciono un personaje muestro solo las armaduras del inventario
         if personaje_id:
             try:
                 personaje = Personaje.objects.get(id=personaje_id)
                 armadura_content_type = ContentType.objects.get_for_model(Armadura)
-                # Get armor from this character's inventory
+                # Pillo las armaduras del inventario
                 armadura_items = InventarioItem.objects.filter(
                     inventario=personaje.inventario,
                     content_type=armadura_content_type
@@ -94,14 +94,14 @@ class EquiparArmadura(View):
         personaje = get_object_or_404(Personaje, id=personaje_id)
         armadura = get_object_or_404(Armadura, id=armadura_id)
 
-        # Verify if the character has the armor in their inventory
+        # Verifico si tiene la armadura
         try:
             personaje.equipar_armadura(armadura)
             messages.success(request, f"{personaje.nombre} ha equipado {armadura.nombre}.")
         except ValidationError as e:
             messages.error(request, str(e))
 
-        # Redirect back to the same view with the character pre-selected
+        # Redirect con el personaje preseleccionado
         return redirect(f"add_armadura?personaje={personaje_id}")
 
 
@@ -118,7 +118,7 @@ class ArmaCreateView(CreateView):
     model = Arma
     form_class = ArmaForm
     template_name = 'crear_arma.html'
-    success_url = reverse_lazy('equipamiento:equipamiento_list')  # Cambia esto por la vista de tu lista de armas
+    success_url = reverse_lazy('equipamiento:equipamiento_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
