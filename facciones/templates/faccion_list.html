@@ -285,12 +285,11 @@
             const errorContainer = document.getElementById('error-container');
             const listaFacciones = document.getElementById('lista-facciones');
 
-            // Clear previous content
+            // Eliminar contenido anterior
             errorContainer.innerHTML = '';
             listaFacciones.innerHTML = '';
             loadingElement.style.display = 'block';
 
-            // Adjust URL based on your Django project structure
             fetch('/facciones/api/facciones/')
                 .then(response => {
                     if (!response.ok) {
@@ -301,7 +300,7 @@
                 .then(data => {
                     loadingElement.style.display = 'none';
 
-                    // Handle both paginated and non-paginated responses
+                    // Con o sin paginación
                     const factions = Array.isArray(data.results) ? data.results : data;
 
                     if (!factions || factions.length === 0) {
@@ -318,7 +317,7 @@
                         // URL dinámica generada
                         let url = `/facciones/${fac.id}/`;
 
-                        // Create card content with proper structure
+                        // Carta de la facción
                         li.innerHTML = `
                             <div class="faction-header">
                                 <h2 class="faction-name">${fac.nombre || 'Sin nombre'}</h2>
@@ -348,7 +347,7 @@
                 });
         }
 
-        // Load factions when page loads
+        // Carga las facciones después de cargar la página
         document.addEventListener('DOMContentLoaded', loadFactions);
     </script>
 </body>
