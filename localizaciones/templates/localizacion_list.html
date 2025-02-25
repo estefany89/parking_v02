@@ -5,7 +5,7 @@
 {% if localizacion_list %}
         <ul>
             {% for localizacion in localizacion_list %}
-                     <li><h2><a href="{% url 'localizacion:localizacion_personajes' localizacion.id %}">{{ localizacion.nombre }} </a></h2> <br>
+                     <li><h2><a href="{% url 'localizaciones:localizacion_personajes' localizacion.id %}">{{ localizacion.nombre }} </a></h2> <br>
                      <p>{{ localizacion.description }}</p></li>
             {% endfor %}
         </ul>

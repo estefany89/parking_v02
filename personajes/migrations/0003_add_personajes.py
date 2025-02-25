@@ -2,6 +2,44 @@
 
 from django.db import migrations
 
+def agregar_facciones(apps, schema_editor):
+    Faccion = apps.get_model('facciones', 'Faccion')
+
+    facciones = [
+        {"nombre": "Elfos de Lothlórien", "descripcion": "Dirigidos por Galadriel y Celeborn, guardianes del bosque de Lothlórien."},
+        {"nombre": "Elfos de Rivendel", "descripcion": "El refugio de los elfos en las montañas, hogar de Elrond."},
+        {"nombre": "Gondor", "descripcion": "El gran reino de los Hombres, defensor del mundo libre contra Mordor."},
+        {"nombre": "Rohan", "descripcion": "Los jinetes de la Marca, conocidos por sus caballos y su valentía en batalla."},
+        {"nombre": "Los Enanos de Erebor", "descripcion": "Los habitantes de la Montaña Solitaria, ricos en oro y joyas."},
+        {"nombre": "La Comarca", "descripcion": "El hogar pacífico de los hobbits, alejado de los conflictos del mundo."},
+        {"nombre": "Mordor", "descripcion": "El dominio oscuro de Sauron, donde residen sus ejércitos de orcos y espectros."},
+        {"nombre": "Isengard", "descripcion": "El territorio de Saruman, lleno de maquinaria y experimentos oscuros."},
+        {"nombre": "Los Hombres del Este", "descripcion": "Aliados de Sauron, provenientes de las tierras más allá de Mordor."},
+        {"nombre": "Los Corsarios de Umbar", "descripcion": "Marineros y piratas, enemigos de Gondor y aliados de la oscuridad."}
+    ]
+
+    for faccion in facciones:
+        Faccion.objects.create(**faccion)
+
+def agregar_localizaciones(apps, schema_editor):
+    Localizacion = apps.get_model('localizaciones', 'Localizacion')
+
+    localizaciones = [
+        {"nombre": "Rivendel", "descripcion": "Hogar de los elfos y refugio seguro en las montañas."},
+        {"nombre": "Minas Tirith", "descripcion": "Capital de Gondor, la Ciudad Blanca."},
+        {"nombre": "Mordor", "descripcion": "La oscura tierra de Sauron, hogar del Monte del Destino."},
+        {"nombre": "La Comarca", "descripcion": "Tierra de los hobbits, llena de colinas verdes y tranquilidad."},
+        {"nombre": "Bosque Negro", "descripcion": "Un bosque vasto y peligroso, hogar de arañas gigantes y elfos silvanos."},
+        {"nombre": "Edoras", "descripcion": "Capital de Rohan, donde se alza el Meduseld, el gran salón dorado."},
+        {"nombre": "Gondolin", "descripcion": "La legendaria ciudad élfica oculta en las montañas."},
+        {"nombre": "Isengard", "descripcion": "Fortaleza de Saruman, rodeada por un gran muro de piedra."},
+        {"nombre": "Lothlórien", "descripcion": "Bosque encantado gobernado por Galadriel y Celeborn."},
+        {"nombre": "Monte del Destino", "descripcion": "El volcán en Mordor donde fue forjado el Anillo Único."}
+    ]
+
+    for loc in localizaciones:
+        Localizacion.objects.create(**loc)
+
 def agregar_personajes_y_armas(apps, schema_editor):
     Personaje = apps.get_model('personajes', 'Personaje')
     Localizacion = apps.get_model('localizaciones', 'Localizacion')
@@ -92,5 +130,7 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+        migrations.RunPython(agregar_facciones),
+        migrations.RunPython(agregar_localizaciones),
         migrations.RunPython(agregar_personajes_y_armas),
     ]

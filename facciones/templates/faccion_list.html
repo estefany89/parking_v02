@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>Lista de Facciones</h1>
+
+{% if faccion_list %}
+        <ul>
+            {% for faccion in faccion_list %}
+                     <li><h2><a href="{% url 'facciones:faccion_personajes' faccion.id %}">{{ faccion.nombre }} </a></h2> <br>
+                     <p>{{ faccion.description }}</p></li>
+            {% endfor %}
+        </ul>
+            {% else %}
+                <p>No hay facciones disponibles.</p>
+            {% endif %}
+{% endblock %}

@@ -4,4 +4,4 @@ from .models import Personaje
 class PersonajeForm(forms.ModelForm):
     class Meta:
         model = Personaje
-        fields = ("nombre", "imagen")
+        fields = ("nombre", "localizacion", "faccion", "imagen")
