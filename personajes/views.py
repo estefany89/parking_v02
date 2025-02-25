@@ -1,10 +1,11 @@
 from django.urls import reverse_lazy
 from django.views.generic.edit import FormView
 from django.views.generic.detail import DetailView
-from django.views.generic.list import ListView
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from .forms import PersonajeForm
 from .models import Personaje
+from .serializers import PersonajeSerializer
+from rest_framework import viewsets
 
 class PersonajeDetalles(DetailView):
     model = Personaje
@@ -14,11 +15,6 @@ class PersonajeDetalles(DetailView):
     def get_object(self):
         return get_object_or_404(Personaje, pk=self.kwargs.get("pk"))
 
-class PersonajeList(ListView):
-    model = Personaje
-    template_name = "personaje_list.html"
-    context_object_name = "personaje_list"
-    # Opcional, para paginación paginate_by = 10
 
 class CrearPersonajeView(FormView):
     template_name = "crear_personaje.html"
@@ -28,3 +24,10 @@ class CrearPersonajeView(FormView):
     def form_valid(self, form):
         form.save()  # Guarda el personaje si el formulario es válido
         return super().form_valid(form)
+
+class PersonajeViewSet(viewsets.ModelViewSet):
+    queryset = Personaje.objects.all()
+    serializer_class = PersonajeSerializer
+
+def personaje_list(request):
+    return render(request, 'personaje_list.html')

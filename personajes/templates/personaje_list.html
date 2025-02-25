@@ -1,15 +1,113 @@
-{% extends 'base.html' %}
-{% block content %}
-
-{% if personaje_list %}
-    <h1>Lista de personajes</h1>
-    <ul>
-    {% for personaje in personaje_list %}
-        <li><img src="{{ personaje.imagen.url }}" alt="{{ personaje.nombre }}"><h2><a href="{% url 'personajes:personaje_detalles' personaje.id %}">{{ personaje.nombre }}</a></h2></li>
-    {% endfor %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Personajes</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Ruta corregida para la API
+            fetch('/personajes/api/personajes/')
+                .then(response => response.json())
+                .then(data => {
+                    const listaPersonajes = document.getElementById('personaje-list');
+                    data.forEach(personaje => {
+                        const personajeItem = document.createElement('li');
+                        personajeItem.className = 'personaje-item';
+                        personajeItem.innerHTML = `
+                            <h2>${personaje.nombre}</h2>
+                            <img src="${personaje.imagen}" alt="${personaje.nombre}" width="100">
+                            <p>HP: ${personaje.hp}</p>
+                            <p>Localización: ${personaje.localizacion || 'No disponible'}</p>
+                            <p>Facción: ${personaje.faccion || 'No disponible'}</p>
+                            <p>Arma: ${personaje.arma_equipada || 'Ninguna'}</p>
+                            <p>Armadura: ${personaje.armadura_equipada || 'Ninguna'}</p>
+                            <a href="/personajes/${personaje.id}/" class="ver-detalles">Ver detalles</a>
+                        `;
+                        listaPersonajes.appendChild(personajeItem);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error al cargar los personajes:', error);
+                    document.getElementById('error-message').textContent = 'Error al cargar los personajes. Por favor, inténtalo de nuevo más tarde.';
+                    document.getElementById('error-message').style.display = 'block';
+                });
+        });
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        #personaje-list {
+            display: flex;
+            flex-wrap: wrap;
+            list-style-type: none;
+            padding: 0;
+            gap: 20px;
+        }
+        .personaje-item {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            width: 250px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .personaje-item img {
+            display: block;
+            margin: 0 auto 10px;
+            border-radius: 5px;
+        }
+        .personaje-item h2 {
+            text-align: center;
+            margin-top: 0;
+        }
+        .ver-detalles {
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+            padding: 8px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        #error-message {
+            display: none;
+            color: red;
+            background-color: #ffeeee;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .actions {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .add-button {
+            padding: 10px 15px;
+            background-color: #2196F3;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Lista de Personajes</h1>
+    <div id="error-message"></div>
+    <div class="actions">
+        <a href="/personajes/crear/" class="add-button">Crear Nuevo Personaje</a>
+    </div>
+    <ul id="personaje-list">
+        <!-- Los personajes se agregarán dinámicamente aquí -->
     </ul>
-{% else %}
-    <p>No hay personajes registrados</p>
-{% endif %}
-
-{% endblock %}
+</body>
+</html>
