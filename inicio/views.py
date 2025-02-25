@@ -1,6 +1,4 @@
-from django.urls import path
-from . import views
+from django.shortcuts import render
 
-urlpatterns = [
-    path('inicio/', views.mostrar_menu, name='mostrar_menu'),
-]
+def mostrar_menu(request):
+    return render(request, 'menu.html')

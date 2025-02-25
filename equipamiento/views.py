@@ -65,7 +65,8 @@ class EquipamientoList(View):
 
     def get(self, request):
         armas = Arma.objects.all()
-        return render(request, self.template_name, {"armas": armas})
+        armaduras = Armadura.objects.all()
+        return render(request, self.template_name, {"armas": armas, "armaduras": armaduras})
 
 
 class ArmaCreateView(CreateView):
