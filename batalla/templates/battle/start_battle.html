@@ -123,9 +123,9 @@
             updateHP('machine', response.machine_hp);
 
             // Añadir al div Battlelog
-            addToBattleLog(`Player uses ${response.attack_name} and deals ${response.damage_dealt} damage!`);
+            addToBattleLog(`El jugador ha usado ${response.attack_name} y ha hecho ${response.damage_dealt} de daño!`);
             if (response.machine_damage_dealt) {
-                addToBattleLog(`Machine uses ${response.machine_attack_name} and deals ${response.machine_damage_dealt} damage!`);
+                addToBattleLog(`La máquina ha usado ${response.machine_attack_name} y ha hecho ${response.machine_damage_dealt} de daño!`);
             }
 
             // Mira si hay ganador
