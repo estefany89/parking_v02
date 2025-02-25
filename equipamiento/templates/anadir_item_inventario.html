@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Añadir Item al Inventario</h1>
+
+<div class="card">
+  <div class="card-body">
+    <!-- Selección de personaje -->
+    <form id="seleccionPersonaje" method="get">
+      <div class="form-group">
+        <label for="personaje">Seleccionar Personaje:</label>
+        <select name="personaje" id="personaje" class="form-control" onchange="this.form.submit()">
+          <option value="">-- Seleccionar Personaje --</option>
+          {% for personaje in personajes %}
+            <option value="{{ personaje.id }}" {% if personaje_seleccionado == personaje.id|stringformat:"s" %}selected{% endif %}>
+              {{ personaje.nombre }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+      
+      {% if personaje_seleccionado %}
+      <div class="form-group mt-3">
+        <label for="tipo_item">Tipo de Item:</label>
+        <select name="tipo_item" id="tipo_item" class="form-control" onchange="this.form.submit()">
+          <option value="arma" {% if tipo_item == 'arma' %}selected{% endif %}>Armas</option>
+          <option value="armadura" {% if tipo_item == 'armadura' %}selected{% endif %}>Armaduras</option>
+          <option value="consumible" {% if tipo_item == 'consumible' %}selected{% endif %}>Consumibles</option>
+        </select>
+      </div>
+      {% endif %}
+    </form>
+
+    {% if personaje_seleccionado %}
+      {% if items %}
+        <form method="post" class="mt-4">
+          {% csrf_token %}
+          <input type="hidden" name="personaje" value="{{ personaje_seleccionado }}">
+          <input type="hidden" name="tipo_item" value="{{ tipo_item }}">
+          
+          <div class="form-group">
+            <label for="item">Seleccionar Item:</label>
+            <select name="item" id="item" class="form-control" required>
+              <option value="">-- Seleccionar Item --</option>
+              {% for item in items %}
+                <option value="{{ item.id }}">
+                  {% if tipo_item == 'arma' %}
+                    {{ item.nombre }} ({{ item.get_tipo_display }}) - Daño: {{ item.dano_base }}
+                  {% elif tipo_item == 'armadura' %}
+                    {{ item.nombre }} - Defensa: {{ item.defensa }}
+                  {% elif tipo_item == 'consumible' %}
+                    {{ item.get_tipo_display }} - Potencia: {{ item.potencia }}
+                  {% endif %}
+                </option>
+              {% endfor %}
+            </select>
+          </div>
+          
+          <div class="form-group mt-3">
+            <label for="cantidad">Cantidad:</label>
+            <input type="number" name="cantidad" id="cantidad" class="form-control" min="1" value="1" required>
+          </div>
+          
+          <button type="submit" class="btn btn-primary mt-3">Añadir al Inventario</button>
+        </form>
+      {% else %}
+        <div class="alert alert-info mt-3">
+          No hay {{ tipo_item }}s disponibles para añadir a inventarios.
+        </div>
+      {% endif %}
+    {% endif %}
+  </div>
+</div>
+
+<!-- Mensajes de éxito o error -->
+{% if messages %}
+<div class="mt-3">
+  {% for message in messages %}
+    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+      {{ message }}
+    </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<div class="mt-3">
+  <a href="{% url 'equipamiento:equipamiento_list' %}" class="btn btn-secondary">Lista de items</a>
+</div>
+{% endblock %}

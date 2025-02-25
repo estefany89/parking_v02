@@ -18,7 +18,7 @@
         </div>
     {% endif %}
 
-    <form action="{% url 'equipar_arma' %}" method="post">
+    <form action="{% url 'equipamiento:equipar_arma' %}" method="post">
         {% csrf_token %}
 
         <label for="personaje">Seleccionar Personaje:</label>

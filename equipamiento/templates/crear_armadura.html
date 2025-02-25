@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Crear Nueva Armadura</h1>
+
+<div class="card">
+  <div class="card-body">
+    <form method="post">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="{{ form.nombre.id_for_label }}">Nombre:</label>
+        {{ form.nombre }}
+      </div>
+
+      <div class="form-group mt-3">
+        <label for="{{ form.defensa.id_for_label }}">Defensa:</label>
+        {{ form.defensa }}
+      </div>
+
+      <button type="submit" class="btn btn-success mt-3">Crear Armadura</button>
+    </form>
+
+    <a href="{% url 'equipamiento:equipamiento_list' %}" class="btn btn-secondary mt-3">Volver a la lista</a>
+  </div>
+</div>
+
+{% endblock %}

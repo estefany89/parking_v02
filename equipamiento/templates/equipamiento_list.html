@@ -26,13 +26,22 @@
     </ul>
 
     <h1>Lista de Armaduras</h1>
-    <ul>
+
+<div class="card">
+  <div class="card-body">
+    {% if armaduras %}
+      <ul class="list-group">
         {% for armadura in armaduras %}
-            <li><strong>{{ armadura.nombre }}</strong> - Defensa Física: {{ armadura.defensa_fisica }}, Defensa Mágica: {{ armadura.defensa_magica }}</li>
-        {% empty %}
-            <li>No hay armaduras disponibles.</li>
+          <li class="list-group-item">
+            <strong>{{ armadura.nombre }}</strong> - Defensa: {{ armadura.defensa }}
+          </li>
         {% endfor %}
-    </ul>
+      </ul>
+    {% else %}
+      <div class="alert alert-warning mt-3">No hay armaduras disponibles.</div>
+    {% endif %}
+  </div>
+</div>
 
 </body>
 </html>
