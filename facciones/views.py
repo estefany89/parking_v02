@@ -1,12 +1,9 @@
 from django.views.generic import ListView, DetailView
 from .models import Faccion
 from personajes.models import Personaje
-
-class FaccionListView(ListView):
-    """Vista para mostrar la lista de facciones."""
-    model = Faccion
-    template_name = 'faccion_list.html'
-    context_object_name = 'faccion_list'
+from .serializers import FaccionSerializer
+from rest_framework import viewsets
+from django.shortcuts import render
 
 class FaccionPersonajesView(DetailView):
     """Vista para mostrar los personajes de una facción específica."""
@@ -18,3 +15,10 @@ class FaccionPersonajesView(DetailView):
         context = super().get_context_data(**kwargs)
         context['personajes'] = Personaje.objects.filter(faccion=self.object)
         return context
+
+class FaccionViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Faccion.objects.all()
+    serializer_class = FaccionSerializer
+
+def lista_facciones(request):
+    return render(request, "faccion_list.html")

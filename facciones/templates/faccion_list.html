@@ -1,16 +1,355 @@
-{% extends "base.html" %}
-{% block content %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Facciones</title>
+    <style>
+        :root {
+            --primary-color: #6a11cb;
+            --secondary-color: #2575fc;
+            --text-color: #333;
+            --light-text: #fff;
+            --background: #f9f9f9;
+            --card-bg: #fff;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --hover-shadow: rgba(106, 17, 203, 0.2);
+        }
 
-<h1>Lista de Facciones</h1>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', 'Segoe UI', sans-serif;
+        }
 
-{% if faccion_list %}
-        <ul>
-            {% for faccion in faccion_list %}
-                     <li><h2><a href="{% url 'facciones:faccion_personajes' faccion.id %}">{{ faccion.nombre }} </a></h2> <br>
-                     <p>{{ faccion.description }}</p></li>
-            {% endfor %}
-        </ul>
-            {% else %}
-                <p>No hay facciones disponibles.</p>
-            {% endif %}
-{% endblock %}
+        body {
+            background: var(--background);
+            color: var(--text-color);
+            min-height: 100vh;
+            padding: 0;
+            margin: 0;
+            background-image: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            background-attachment: fixed;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            padding: 2rem 0;
+            color: var(--light-text);
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        #lista-facciones {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+            list-style: none;
+            padding: 0;
+            margin: 2rem 0;
+        }
+
+        .faction-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px var(--shadow);
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            transform: translateY(0);
+        }
+
+        .faction-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px var(--hover-shadow);
+        }
+
+        .faction-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .faction-header {
+            background: linear-gradient(45deg, rgba(106, 17, 203, 0.9), rgba(37, 117, 252, 0.9));
+            padding: 1.5rem;
+            color: var(--light-text);
+            transition: all 0.3s ease;
+        }
+
+        .faction-card:hover .faction-header {
+            background: linear-gradient(45deg, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1));
+        }
+
+        .faction-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0;
+            text-decoration: none;
+            color: var(--light-text);
+        }
+
+        .faction-content {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .faction-description {
+            line-height: 1.6;
+            color: var(--text-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .view-button {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: var(--light-text);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 500;
+            text-align: center;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+            margin-top: auto;
+            border: none;
+            cursor: pointer;
+            align-self: flex-start;
+        }
+
+        .view-button:hover {
+            background: linear-gradient(45deg, var(--secondary-color), var(--primary-color));
+            box-shadow: 0 5px 15px rgba(37, 117, 252, 0.4);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: var(--light-text);
+            font-size: 1.2rem;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--light-text);
+            animation: spin 1s ease-in-out infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .error-container {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            max-width: 600px;
+            margin: 2rem auto;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .error-icon {
+            font-size: 3rem;
+            color: #e74c3c;
+            margin-bottom: 1rem;
+        }
+
+        .error-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #e74c3c;
+        }
+
+        .error-message {
+            margin-bottom: 1.5rem;
+        }
+
+        .retry-button {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .retry-button:hover {
+            background: linear-gradient(45deg, var(--secondary-color), var(--primary-color));
+            box-shadow: 0 5px 15px rgba(37, 117, 252, 0.4);
+        }
+
+        .badge {
+            display: inline-block;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            #lista-facciones {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animation for cards appearing */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .faction-card {
+            animation: fadeInUp 0.5s ease forwards;
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Lista de Facciones</h1>
+            <p class="subtitle">Descubre las diferentes facciones que componen este universo y su papel en la historia</p>
+        </header>
+
+        <div id="loading" class="loading">
+            <div class="loading-spinner"></div>
+            <p>Cargando facciones...</p>
+        </div>
+
+        <div id="error-container"></div>
+
+        <ul id="lista-facciones"></ul>
+    </div>
+
+    <script>
+        function loadFactions() {
+            const loadingElement = document.getElementById('loading');
+            const errorContainer = document.getElementById('error-container');
+            const listaFacciones = document.getElementById('lista-facciones');
+
+            // Clear previous content
+            errorContainer.innerHTML = '';
+            listaFacciones.innerHTML = '';
+            loadingElement.style.display = 'block';
+
+            // Adjust URL based on your Django project structure
+            fetch('/facciones/api/facciones/')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Error HTTP: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    loadingElement.style.display = 'none';
+
+                    // Handle both paginated and non-paginated responses
+                    const factions = Array.isArray(data.results) ? data.results : data;
+
+                    if (!factions || factions.length === 0) {
+                        throw new Error('No hay facciones disponibles');
+                    }
+
+                    factions.forEach((fac, index) => {
+                        let li = document.createElement('li');
+                        li.className = 'faction-card';
+
+                        // Add delay to stagger animation
+                        li.style.animationDelay = `${index * 0.1}s`;
+
+                        // URL dinámica generada
+                        let url = `/facciones/${fac.id}/`;
+
+                        // Create card content with proper structure
+                        li.innerHTML = `
+                            <div class="faction-header">
+                                <h2 class="faction-name">${fac.nombre || 'Sin nombre'}</h2>
+                            </div>
+                            <div class="faction-content">
+                                <p class="faction-description">${fac.descripcion || 'Sin descripción'}</p>
+                                <a href="${url}" class="view-button">Ver detalles</a>
+                            </div>
+                        `;
+
+                        listaFacciones.appendChild(li);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error cargando facciones:', error);
+                    loadingElement.style.display = 'none';
+
+                    errorContainer.innerHTML = `
+                        <div class="error-container">
+                            <div class="error-icon">⚠️</div>
+                            <h3 class="error-title">Error al cargar las facciones</h3>
+                            <p class="error-message">Ha ocurrido un problema al intentar cargar la lista de facciones.</p>
+                            <p class="error-details"><small>${error.message}</small></p>
+                            <button class="retry-button" onclick="loadFactions()">Intentar de nuevo</button>
+                        </div>
+                    `;
+                });
+        }
+
+        // Load factions when page loads
+        document.addEventListener('DOMContentLoaded', loadFactions);
+    </script>
+</body>
+</html>

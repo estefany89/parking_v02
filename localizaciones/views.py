@@ -1,13 +1,12 @@
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import ListView
+from rest_framework import viewsets
 from .models import Localizacion
 from django.views import View
 from personajes.models import Personaje
+from .serializers import LocalizacionSerializer
 
-class LocalizacionList(ListView):
-    model = Localizacion
-    template_name = "localizacion_list.html"
-    context_object_name = "localizacion_list"
+def lista_localizaciones(request):
+    return render(request, "localizacion_list.html")
 
 class LocalizacionPersonajes(View):
     template_name = "localizacion_personajes.html"
@@ -17,3 +16,7 @@ class LocalizacionPersonajes(View):
         localizacion = get_object_or_404(Localizacion, pk=pk)
         personajes = Personaje.objects.filter(localizacion=localizacion)
         return render(request, self.template_name, {"localizacion": localizacion, "personajes": personajes})
+
+class LocalizacionViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Localizacion.objects.all()
+    serializer_class = LocalizacionSerializer
