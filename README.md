@@ -105,13 +105,13 @@ Cada personaje tiene un inventario donde almacena objetos.
 ### 🤖 API Endpoints
 Mediante `PersonajeViewSet` se exponen los endpoints REST para gestionar personajes.
 
-| Método | Endpoint | Descripción |
-|--------|---------|-------------|
-| GET | `/api/personajes/` | Lista todos los personajes |
-| POST | `/api/personajes/` | Crea un nuevo personaje |
-| GET | `/api/personajes/{id}/` | Obtiene detalles de un personaje |
-| PUT | `/api/personajes/{id}/` | Modifica un personaje |
-| DELETE | `/api/personajes/{id}/` | Elimina un personaje |
+| Método | Endpoint                          | Descripción |
+|--------|-----------------------------------|-------------|
+| GET | `personajes/api/personajes/`      | Lista todos los personajes |
+| POST | `personajes/api/personajes/`      | Crea un nuevo personaje |
+| GET | `personajes/api/personajes/{id}/` | Obtiene detalles de un personaje |
+| PUT | `personajes/api/personajes/{id}/` | Modifica un personaje |
+| DELETE | `personajes/api/personajes/{id}/` | Elimina un personaje |
 
 ### 🖼 Plantillas y Frontend
 - `personaje_list.html`: Lista de personajes.
@@ -214,7 +214,24 @@ Representa una ubicación dentro del juego. Atributos clave:
 Métodos importantes:
 - `__str__()`: Devuelve el nombre de la localización para su visualización en el panel de administración y en otros contextos.
 
-### 🚀 Vistas
+### 🤖 API Endpoints
+
+Mediante `LocalizacionViewSet` se exponen los endpoints REST para gestionar localizaciones.
+
+| Método | Endpoint | Descripción |
+|--------|---------|-------------|
+| GET | `localizaciones/api/localizaciones/` | Lista todas las localizaciones |
+| GET | `localizaciones/api/localizaciones/{id}/` | Obtiene detalles de una localización |
+
+Además, se disponen de vistas adicionales:  
+
+| Método | Endpoint | Descripción |
+|--------|---------|-------------|
+| GET | `localizaciones/localizacion_list/` | Renderiza la lista de localizaciones en una vista HTML |
+| GET | `localizaciones/localizaciones/{id}/` | Muestra los personajes asociados a una localización específica en una vista HTML |
+
+
+### 🧐 Vistas
 
 - **`LocalizacionList` (ListView)**: Muestra una lista de todas las localizaciones disponibles en el juego.
 - **`LocalizacionPersonajes` (View)**: Permite visualizar los detalles de una localización específica y los personajes asociados a ella.
@@ -245,6 +262,23 @@ Representa una facción dentro del juego. Atributos clave:
 
 Métodos importantes:
 - `__str__()`: Devuelve el nombre de la facción para su visualización en el panel de administración y en otros contextos.
+
+### 🤖 API Endpoints
+
+Mediante `FaccionViewSet` se exponen los endpoints REST para gestionar facciones.
+
+| Método | Endpoint | Descripción |
+|--------|---------|-------------|
+| GET | `facciones/api/facciones/` | Lista todas las facciones |
+| GET | `facciones/api/facciones/{id}/` | Obtiene detalles de una facción |
+
+Además, se disponen de vistas adicionales:  
+
+| Método | Endpoint | Descripción |
+|--------|---------|-------------|
+| GET | `/faccion_list/` | Renderiza la lista de facciones en una vista HTML |
+| GET | `/facciones/{id}/` | Muestra los personajes asociados a una facción específica en una vista HTML |
+
 
 ### 🧐 Vistas
 

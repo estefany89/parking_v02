@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+    <a href="{% url 'inicio:mostrar_menu' %}">VOLVER A INICIO</a> <br>
 <h2>Crear Arma y Ataques</h2>
 <form method="post">
     {% csrf_token %}

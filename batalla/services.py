@@ -25,7 +25,7 @@ class BattleService:
 
     def _calculate_damage(self, attack):
         """Calculo el daño del ataque redondeado"""
-        base_damage = attack.dano
+        base_damage = attack.dano + attack.arma.dano_base
         return round(base_damage)
 
     def _apply_damage(self, target, damage):

@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-
+<a href="{% url 'inicio:mostrar_menu' %}">VOLVER A INICIO</a> <br>
 <h1>Detalles de {{ personaje.nombre }}</h1>
     <p><strong>Localización:</strong> {{ personaje.localizacion }}</p>
     <p><strong>Facción:</strong> {{ personaje.faccion }}</p>

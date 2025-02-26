@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Add armadura</title>
-     <style>
+    <style>
         .alert { padding: 10px; margin-bottom: 15px; border-radius: 5px; }
         .alert-success { background-color: #d4edda; color: #155724; }
         .alert-error { background-color: #f8d7da; color: #721c24; }
     </style>
 </head>
 <body>
+<a href="{% url 'inicio:mostrar_menu' %}">VOLVER A INICIO</a> <br>
 <h1>Equipar Armadura</h1>
 
     <!-- Mostrar mensajes -->
@@ -23,25 +24,39 @@
         </div>
     {% endif %}
 
-    <form action="{% url 'equipamiento:equipar_armadura' %}" method="post">
-        {% csrf_token %}
-
+    <!-- Formulario para seleccionar personaje -->
+    <form id="seleccionarPersonajeForm" action="{% url 'equipamiento:equipar_armadura' %}" method="get">
         <label for="personaje">Seleccionar Personaje:</label>
-        <select id="personaje" name="personaje" required>
+        <select id="personaje" name="personaje" onchange="this.form.submit()">
+            <option value="">-- Selecciona un personaje --</option>
             {% for personaje in personajes %}
-                <option value="{{ personaje.id }}">{{ personaje.nombre }}</option>
+                <option value="{{ personaje.id }}" {% if personaje_seleccionado == personaje.id|stringformat:"s" %}selected{% endif %}>{{ personaje.nombre }}</option>
             {% endfor %}
         </select>
-
-        <label for="objeto">Seleccionar Armadura:</label>
-        <select id="objeto" name="objeto" required>
-            {% for armadura in armaduras %}
-                <option value="{{ armadura.id }}">{{ armadura.nombre }}</option>
-            {% endfor %}
-        </select>
-
-        <button type="submit">Equipar</button>
     </form>
+
+    <!-- Formulario para equipar armadura, solo se muestra si hay un personaje seleccionado -->
+    {% if personaje_seleccionado %}
+        <form action="{% url 'equipamiento:equipar_armadura' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="personaje" value="{{ personaje_seleccionado }}">
+
+            <label for="objeto">Seleccionar Armadura:</label>
+            <select id="objeto" name="objeto" required>
+                {% for armadura in armaduras %}
+                    <option value="{{ armadura.id }}">{{ armadura.nombre }}</option>
+                {% endfor %}
+            </select>
+
+            {% if armaduras %}
+                <button type="submit">Equipar</button>
+            {% else %}
+                <p>No hay armaduras disponibles en el inventario de este personaje.</p>
+            {% endif %}
+        </form>
+    {% else %}
+        <p>Selecciona un personaje para ver las armaduras disponibles.</p>
+    {% endif %}
 
 </body>
 </html>

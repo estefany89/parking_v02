@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <a href="{% url 'inicio:mostrar_menu' %}">VOLVER A INICIO</a> <br>
   <h1>{% if object %}Editar{% else %}Crear{% endif %} Relación</h1>
 
   <form method="post">

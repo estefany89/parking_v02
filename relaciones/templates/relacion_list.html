@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <a href="{% url 'inicio:mostrar_menu' %}">VOLVER A INICIO</a> <br>
   <h1>Lista de Relaciones</h1>
   <ul>
     {% for relacion in object_list %}

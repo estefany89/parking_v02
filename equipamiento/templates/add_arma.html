@@ -1,42 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Add equipamiento</title>
+   <meta charset="UTF-8">
+   <title>Add equipamiento</title>
 </head>
 <body>
+<a href="{% url 'inicio:mostrar_menu' %}">VOLVER A INICIO</a> <br>
 <h1>Equipar Arma</h1>
 
-    <!-- Mostrar mensajes -->
-    {% if messages %}
-        <div>
-            {% for message in messages %}
-                <div class="alert {% if message.tags == 'error' %}alert-error{% else %}alert-success{% endif %}">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        </div>
-    {% endif %}
 
-    <form action="{% url 'equipamiento:equipar_arma' %}" method="post">
-        {% csrf_token %}
+   <!-- Mostrar mensajes -->
+   {% if messages %}
+       <div>
+           {% for message in messages %}
+               <div class="alert {% if message.tags == 'error' %}alert-error{% else %}alert-success{% endif %}">
+                   {{ message }}
+               </div>
+           {% endfor %}
+       </div>
+   {% endif %}
 
-        <label for="personaje">Seleccionar Personaje:</label>
-        <select id="personaje" name="personaje" required>
-            {% for personaje in personajes %}
-                <option value="{{ personaje.id }}">{{ personaje.nombre }}</option>
-            {% endfor %}
-        </select>
 
-        <label for="objeto">Seleccionar Arma:</label>
-        <select id="objeto" name="objeto" required>
-            {% for arma in armas %}
-                <option value="{{ arma.id }}">{{ arma.nombre }} ({{ arma.tipo }})</option>
-            {% endfor %}
-        </select>
+   <!-- Formulario para seleccionar personaje (autosubmit) -->
+   <form id="seleccionPersonajeForm" action="{% url 'equipamiento:equipar_arma' %}" method="get">
+       <label for="personaje">Seleccionar Personaje:</label>
+       <select id="personaje" name="personaje" onchange="this.form.submit()">
+           <option value="">-- Seleccione un personaje --</option>
+           {% for personaje in personajes %}
+               <option value="{{ personaje.id }}" {% if personaje.id|stringformat:"i" == personaje_seleccionado %}selected{% endif %}>{{ personaje.nombre }}</option>
+           {% endfor %}
+       </select>
+   </form>
 
-        <button type="submit">Equipar</button>
-    </form>
+
+   <!-- Formulario para equipar arma (solo visible si hay armas) -->
+   {% if armas %}
+       <form action="{% url 'equipamiento:equipar_arma' %}" method="post">
+           {% csrf_token %}
+           <input type="hidden" name="personaje" value="{{ personaje_seleccionado }}">
+
+
+           <label for="objeto">Seleccionar Arma:</label>
+           <select id="objeto" name="objeto" required>
+               {% for arma in armas %}
+                   <option value="{{ arma.id }}">{{ arma.nombre }} ({{ arma.tipo }})</option>
+               {% endfor %}
+           </select>
+
+
+           <button type="submit">Equipar</button>
+       </form>
+   {% elif personaje_seleccionado %}
+       <p>Este personaje no tiene armas en su inventario.</p>
+   {% endif %}
+
 
 </body>
 </html>
