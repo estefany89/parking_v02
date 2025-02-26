@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Lista de Relaciones</h1>
+  <ul>
+    {% for relacion in object_list %}
+      <li>
+        <a href="{% url 'relaciones:relacion_detail' relacion.pk %}">{{ relacion.personaje1 }} - {{ relacion.personaje2 }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+  <a href="{% url 'relaciones:relacion_create' %}">Crear nueva relación</a>
+{% endblock %}

@@ -102,7 +102,7 @@ Cada personaje tiene un inventario donde almacena objetos.
 - `InventarioItem`: Permite guardar armas, armaduras y consumibles.  
 - Usa `GenericForeignKey` para manejar diferentes tipos de objetos.
 
-### 🚀 API Endpoints
+### 🤖 API Endpoints
 Mediante `PersonajeViewSet` se exponen los endpoints REST para gestionar personajes.
 
 | Método | Endpoint | Descripción |
@@ -246,7 +246,7 @@ Representa una facción dentro del juego. Atributos clave:
 Métodos importantes:
 - `__str__()`: Devuelve el nombre de la facción para su visualización en el panel de administración y en otros contextos.
 
-### 🚀 Vistas
+### 🧐 Vistas
 
 - **`FaccionListView` (ListView)**: Muestra una lista de todas las facciones disponibles en el juego.
 - **`FaccionPersonajesView` (DetailView)**: Permite visualizar los detalles de una facción específica y los personajes asociados a ella. Utiliza el contexto `personajes`, que contiene todos los personajes relacionados con esa facción.
@@ -259,3 +259,54 @@ Métodos importantes:
 ### 📌 Notas
 - Las facciones están predefinidas en el juego y no se pueden crear ni modificar desde la app.
 - Los personajes están asociados a las facciones, y pueden ser visualizados a través de la vista `FaccionPersonajesView`.
+# `Relacion`
+Representa una relación entre dos personajes dentro del juego. Atributos clave:
+- **Personaje 1** (`personaje1`): El primer personaje involucrado en la relación.
+- **Personaje 2** (`personaje2`): El segundo personaje involucrado en la relación.
+- **Tipo de Relación** (`tipo`): El tipo de relación entre los dos personajes. Los valores posibles son:
+  - **"A"**: Amigos
+  - **"E"**: Enemigos
+  - **"N"**: Neutrales
+
+Métodos importantes:
+- `get_tipo_display()`: Devuelve el tipo de relación en formato legible, como "Amigos", "Enemigos" o "Neutrales", en lugar de mostrar los códigos (`A`, `E`, `N`).
+
+### 🧐 Vistas
+
+- **`RelacionCreateView` (CreateView)**: Vista que permite crear una nueva relación entre dos personajes en el juego.
+- **`RelacionDetailView` (DetailView)**: Muestra los detalles de una relación específica, incluyendo los personajes involucrados y el tipo de relación.
+
+### 🖼 Plantillas y Frontend
+
+- `relacion_form.html`: Página que muestra el formulario para crear una nueva relación entre dos personajes.
+- `relacion_detail.html`: Página que muestra los detalles de una relación entre dos personajes, incluyendo su tipo (Amigos, Enemigos, Neutrales).
+# TESTING
+Para ejecutar los tests en local usar antes:
+```bash
+python manage.py migrate
+```
+Los tests están hechos sobre la aplicación Personajes y se dividen en 3 archivos para abarcar los modelos, las urls y las vistas.
+
+### test_models
+Valida la funcionalidad de los modelos relacionados con los personajes, inventarios y equipamiento en la aplicación. 
+Se incluyen pruebas para la creación de personajes, la gestión de armas y armaduras en el inventario, además de validar el manejo del inventario y los métodos para equipar/desequipar equipamiento.
+
+### test_urls
+Valida el correcto funcionamiento de las URLs de la aplicación, tanto para vistas basadas en clases como para la API. Se verifica que las URLs correspondientes a las vistas de personajes (lista, detalles y creación) se resuelvan correctamente y apunten a las vistas y funciones adecuadas. Además me aseguro que las urls de la API de personajes tambíen estén configuradas correctamente
+
+### test_views
+valida las vistas asociadas con la creación, detalle y lista de personajes en la aplicación. Se comprueban las siguientes funcionalidades:
+
+- **Vista de detalle de personaje**: Verifica que al acceder a la vista de detalles de un personaje, se muestre la información correcta, se devuelva un código de estado 200 y se use el template adecuado.
+
+- **Vista de creación de personaje**:
+  - **GET**: Comprueba que la página de creación cargue correctamente y utilice el template adecuado.
+  - **POST**: Verifica que se pueda crear un personaje con datos válidos, que se redirija correctamente y que el personaje se guarde en la base de datos.
+
+- **Vista de lista de personajes**: Asegura que la lista de personajes cargue correctamente, se devuelva un código de estado 200 y se use el template adecuado para la visualización de los personajes.
+# Miembros del equipo
+
+- [@Jesús](https://github.com/JesusJimenez01): Encargado de gestionar el grupo, guiar al resto del equipo, estructurar el proyecto, la batalla, los modelos, tests, usar API y la revisión del código
+- [@Jorge](https://github.com/jnarjim): Personajes, equipamiento, facciones, localizaciones y tests
+- [@Estefany](https://github.com/estefany89): Relaciones, Inicio
+
