@@ -86,19 +86,19 @@ WSGI_APPLICATION = 'tierra_media_web.wsgi.application'
 IS_DOCKER = os.environ.get('IS_DOCKER', False)
 
 if IS_DOCKER:
-    # PostgreSQL settings for Docker environment
+    # PostgreSQL para docker
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
             'NAME': os.environ.get('POSTGRES_DB', 'your_db_name'),
             'USER': os.environ.get('POSTGRES_USER', 'postgres'),
             'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'postgres'),
-            'HOST': os.environ.get('POSTGRES_HOST', 'db'),  # This should match your service name in docker-compose
+            'HOST': os.environ.get('POSTGRES_HOST', 'db'), 
             'PORT': os.environ.get('POSTGRES_PORT', '5432'),
         }
     }
 else:
-    # SQLite settings for local development
+    # SQLite para probar en local
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
