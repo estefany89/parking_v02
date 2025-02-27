@@ -344,3 +344,5 @@ valida las vistas asociadas con la creación, detalle y lista de personajes en l
 - [@Jorge](https://github.com/jnarjim): Personajes, equipamiento, facciones, localizaciones y tests
 - [@Estefany](https://github.com/estefany89): Relaciones, Inicio
 
+>[!NOTE]
+>Tuve que subir algunas cosas por mi cuenta por temas relacionados con las ramas y en Insights sale un poco desbalanceado pero el proyecto se ha repartido práctimante 50% Jesús y 50% Jorge, Estefany lo ha intentado 👍
