@@ -1,3 +1,4 @@
+
 # PARKING INTELIGENTE
 
 
@@ -20,3 +21,4 @@ docker compose exec web python manage.py createsuperuser
 1. Acceder a la aplicación
 http://localhost:8000/inicio
     
+
