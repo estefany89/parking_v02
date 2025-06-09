@@ -1,9 +1,0 @@
-{% extends "base.html" %}
-{% block content %}
-<a href="{% url 'inicio:mostrar_menu' %}">VOLVER A INICIO</a> <br>
-<h1>Lista de personajes de {{ localizacion.nombre }}</h1>
-{% for personaje in personajes %}
-	<li>{{ personaje.nombre }}</li>
-{% endfor %}
-
-{% endblock %}

@@ -1,9 +1,8 @@
+from django.contrib.auth import views as auth_views
 from django.urls import path
-
-from batalla.urls import app_name
 from . import views
 app_name = 'inicio'
 
 urlpatterns = [
-    path('inicio/', views.mostrar_menu, name='mostrar_menu'),
+    path('', views.mostrar_menu, name='mostrar_menu'),  # <-- Cambia aquí
 ]

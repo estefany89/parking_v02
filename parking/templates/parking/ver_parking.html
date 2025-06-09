@@ -1,0 +1,159 @@
+{% load dict_extras %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle del Parking</title>
+    <style>
+        body {
+            background: #23272f;
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            min-height: 100vh;
+        }
+        .container {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 32px 28px 24px 28px;
+        }
+        .title {
+            font-size: 1.6em;
+            font-weight: bold;
+            margin-bottom: 18px;
+            color: #1a3c6b;
+            text-align: center;
+        }
+        .stats {
+            margin-bottom: 18px;
+            text-align: center;
+        }
+        .stats span {
+            display: inline-block;
+            margin: 0 12px;
+            font-size: 1.1em;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 18px;
+        }
+        th, td {
+            border: 1px solid #bfc9d1;
+            padding: 10px 8px;
+            text-align: left;
+        }
+        th {
+            background: #f4f7fa;
+            color: #1a3c6b;
+        }
+        .ocupada {
+            color: #c0392b;
+            font-weight: bold;
+        }
+        .libre {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        .menu-btn {
+            display: block;
+            margin: 18px auto 0 auto;
+            background: #1a3c6b;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 0;
+            width: 100%;
+            font-size: 1em;
+            font-weight: 500;
+            text-align: center;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .menu-btn:hover {
+            background: #274a8e;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">Parking: {{ parking.nombre }}</div>
+        <div class="stats">
+            <span><strong>Total de plazas:</strong> {{ total_plazas }}</span>
+            <span><strong>Ocupadas:</strong> {{ ocupadas }} ({{ porcentaje_ocupadas }}%)</span>
+            <span><strong>Libres:</strong> {{ libres }} ({{ porcentaje_libres }}%)</span>
+        </div>
+        <h3 style="color:#1a3c6b; margin-bottom:10px;">Listado de Plazas</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Número</th>
+                    <th>Estado</th>
+                    <th>Vehículo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for plaza in plazas %}
+                <tr>
+                    <td>{{ plaza.numero }}</td>
+                    <td>
+                        {% if plaza.ocupada %}
+                            <span class="ocupada">Ocupada</span>
+                        {% else %}
+                            <span class="libre">Libre</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% with ocupante=ocupantes|dict_get:plaza.id %}
+                            {% if plaza.ocupada and ocupante %}
+                                {{ ocupante.matricula }} - {{ ocupante.marca }} {{ ocupante.modelo }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        {% endwith %}
+                    </td>
+                    <td style="text-align: center;">
+                        {% if request.user.perfilusuario.rol == 'admin' %}
+        <form action="{% url 'eliminar_plaza' parking.pk plaza.pk %}" method="post" style="display:inline;" onsubmit="return confirm('¿Seguro que deseas eliminar esta plaza?');">
+            {% csrf_token %}
+            <button type="submit" title="Eliminar" style="background: none; border: none; cursor: pointer; color: #c0392b; font-size: 1.2em;">
+                &#10006;
+            </button>
+        </form>
+    {% endif %}
+    <!-- Botón Salida: activo solo si ocupada -->
+    <form action="{% url 'salida_plaza' parking.pk plaza.pk %}" method="post" style="display:inline; margin-left:8px;">
+        {% csrf_token %}
+        <button type="submit" title="Registrar salida"
+            style="background: #f39c12; border: none; border-radius: 6px; color: #fff; font-size: 1em; padding: 6px 12px; cursor: pointer;"
+            {% if not plaza.ocupada %}disabled style="opacity:0.5; cursor:not-allowed;"{% endif %}
+            onclick="return confirm('¿Registrar salida del vehículo en esta plaza?');">
+            Salida
+        </button>
+    </form>
+    <!-- Botón Entrada: activo solo si libre -->
+    <form action="{% url 'nueva_entrada' %}" method="get" style="display:inline; margin-left:8px;">
+        <input type="hidden" name="parking" value="{{ parking.id }}">
+        <input type="hidden" name="plaza" value="{{ plaza.numero }}">
+        <button type="submit" title="Registrar entrada"
+            style="background: #27ae60; border: none; border-radius: 6px; color: #fff; font-size: 1em; padding: 6px 12px; cursor: pointer;"
+            {% if plaza.ocupada %}disabled style="opacity:0.5; cursor:not-allowed;"{% endif %}>
+            Entrada
+        </button>
+    </form>
+</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4">No hay plazas registradas.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{% url 'listado_parkings' %}" class="menu-btn">Volver al listado de parkings</a>
+    </div>
+</body>
+</html>

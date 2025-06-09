@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Nueva Entrada</title>
+    <style>
+        body {
+            background: #23272f;
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            min-height: 100vh;
+        }
+        .form-container {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+            max-width: 400px;
+            margin: 40px auto;
+            padding: 32px 28px 24px 28px;
+        }
+        .form-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-bottom: 18px;
+            color: #1a3c6b;
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin-top: 14px;
+            margin-bottom: 4px;
+            color: #23272f;
+        }
+        select, input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #bfc9d1;
+            margin-bottom: 10px;
+            font-size: 1em;
+        }
+        button[type="submit"] {
+            background: #27ae60;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 0;
+            width: 100%;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.2s;
+        }
+        button[type="submit"]:hover {
+            background: #219150;
+        }
+        .mensaje {
+            color: #27ae60;
+            margin-top: 12px;
+            text-align: center;
+        }
+        .error {
+            color: #c0392b;
+            margin-top: 12px;
+            text-align: center;
+        }
+        .menu-btn {
+            display: block;
+            margin: 18px auto 0 auto;
+            background: #1a3c6b;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 0;
+            width: 100%;
+            font-size: 1em;
+            font-weight: 500;
+            text-align: center;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .menu-btn:hover {
+            background: #274a8e;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <div class="form-title">Nueva entrada</div>
+        <form method="post" action="{% url 'nueva_entrada' %}">
+            {% csrf_token %}
+            <label for="parking">Parking:</label>
+            <select name="parking" id="parking" required>
+                {% for parking in parkings %}
+                    <option value="{{ parking.id }}" {% if parking_id == parking.id|stringformat:"s" %}selected{% endif %}>{{ parking.nombre }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="matricula">Matrícula:</label>
+            <input type="text" id="matricula" name="matricula" required>
+
+            <label for="plaza">Número de plaza:</label>
+            <input type="text" id="plaza" name="plaza" value="{{ plaza_numero|default_if_none:'' }}" required>
+
+            <button type="submit">Crear entrada</button>
+        </form>
+        {% if mensaje %}
+            <div class="mensaje">{{ mensaje }}</div>
+        {% endif %}
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+        <a href="{% url 'listado_parkings' %}" class="menu-btn">Volver al listado de parkings</a>
+    </div>
+</body>
+</html>

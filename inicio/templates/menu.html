@@ -1,218 +1,96 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Menú Tierra Media</title>
-   <style>
-   	@import url('https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap');
-
-   	body {
-       	font-family: 'MedievalSharp', cursive;
-       	margin: 0;
-       	padding: 0;
-       	display: flex;
-       	flex-direction: column;
-       	justify-content: center;
-       	align-items: center;
-       	min-height: 100vh;
-       	position: relative;
-       	overflow-x: hidden;
-       	/* Background now defined with a background-color fallback */
-       	background-color: #2a1a0a;
-   	}
-
-   	/* Primary background image as a separate element with higher z-index than the animation layer */
-   	.primary-background {
-       	position: fixed;
-       	top: 0;
-       	left: 0;
-       	width: 100%;
-       	height: 100%;
-       	background: url("media/inicio/fondo.jpeg") no-repeat center center;
-       	background-size: cover;
-       	z-index: 0;
-   	}
-
-   	/* Secondary background for the animation */
-   	.animated-background {
-       	position: fixed;
-       	top: 0;
-       	left: 0;
-       	width: 100%;
-       	height: 100%;
-       	background: url("media/inicio/precioso.jpg") no-repeat center center;
-       	background-size: cover;
-       	opacity: 0;
-       	animation: mostrarFondo 30s linear infinite;
-       	z-index: 1;
-   	}
-
-   	@keyframes mostrarFondo {
-       	0% { opacity: 0; }
-       	50% { opacity: 1; }
-       	100% { opacity: 0; }
-   	}
-
-   	.content {
-       	display: flex;
-       	flex-direction: column;
-       	align-items: center;
-       	z-index: 2;
-       	padding: 2rem 0;
-       	width: 100%;
-       	position: relative;
-   	}
-
-   	.title {
-       	font-size: 4em;
-       	color: #cbd628;
-       	text-shadow: 0 0 30px #FF4500;
-       	animation: glow 1.5s infinite alternate;
-       	margin-bottom: 20px;
-       	text-align: center;
-   	}
-
-   	@keyframes glow {
-       	0% { text-shadow: 0 0 10px #FF4500; }
-       	100% { text-shadow: 0 0 50px #FF4500; }
-   	}
-
-   	.menu {
-       	background: rgba(0, 0, 0, 0.7);
-       	border: 3px solid #FFD700;
-       	border-radius: 15px;
-       	padding: 20px;
-       	display: flex;
-       	flex-direction: column;
-       	align-items: center;
-       	box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
-       	position: relative;
-       	z-index: 2;
-       	max-width: 600px;
-       	width: 90%;
-       	margin: 0 auto;
-   	}
-
-   	.menu h1 {
-       	color: #FFD700;
-       	text-align: center;
-       	margin: 15px 0 10px;
-       	text-shadow: 0 0 5px #FFD700;
-   	}
-
-   	.menu a {
-       	display: block;
-       	color: #FFD700;
-       	text-align: center;
-       	padding: 15px 30px;
-       	text-decoration: none;
-       	font-size: 1.5em;
-       	margin: 10px 0;
-       	width: 100%;
-       	border: 2px solid transparent;
-       	transition: all 0.3s ease-in-out;
-       	position: relative;
-       	opacity: 0;
-       	animation: fadeIn 1s forwards;
-       	animation-delay: calc(var(--i) * 0.1s);
-   	}
-
-   	@keyframes fadeIn {
-       	to {
-           	opacity: 1;
-       	}
-   	}
-
-   	.menu a:hover {
-       	border-color: #FFD700;
-       	background: rgba(255, 215, 0, 0.2);
-       	text-shadow: 0 0 10px #FFD700;
-       	transform: scale(1.05);
-   	}
-
-   	@media (max-width: 768px) {
-       	.title {
-           	font-size: 3em;
-       	}
-
-       	.menu a {
-           	font-size: 1.2em;
-           	padding: 10px 20px;
-       	}
-   	}
-   </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parking. Menú de Opciones</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #23272f;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .menu-container {
+            background: rgba(255,255,255,0.95);
+            border-radius: 16px;
+            box-shadow: 0 4px 32px rgba(0,0,0,0.25);
+            padding: 40px 30px;
+            max-width: 400px;
+            width: 90%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .menu-title {
+            font-size: 2.2em;
+            color: #1a3c6b;
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        .menu-options {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+        .menu-options a {
+            display: block;
+            background: #1a3c6b;
+            color: #fff;
+            text-decoration: none;
+            padding: 15px 0;
+            border-radius: 8px;
+            font-size: 1.15em;
+            text-align: center;
+            transition: background 0.2s, transform 0.2s;
+            font-weight: 500;
+        }
+        .menu-options a:hover {
+            background: #285fa8;
+            transform: scale(1.04);
+        }
+        @media (max-width: 600px) {
+            .menu-container {
+                padding: 20px 5px;
+            }
+            .menu-title {
+                font-size: 1.3em;
+            }
+            .menu-options a {
+                font-size: 1em;
+                padding: 12px 0;
+            }
+        }
+    </style>
 </head>
 <body>
-   <!-- Primary background layer -->
-   <div class="primary-background"></div>
-
-   <!-- Animated background layer -->
-   <div class="animated-background"></div>
-
-   <div class="content">
-   	<h1 class="title">Tierra Media</h1>
-   	<div class="menu">
-       	<h1>PERSONAJES</h1>
-       	<a href="{% url 'personajes:crear_personaje' %}" style="--i:1">Crear personaje</a>
-       	<a href="{% url 'personajes:personaje_list' %}" style="--i:2">Lista de personajes</a>
-
-       	<h1>EQUIPAMIENTO</h1>
-       	<a href="{% url 'equipamiento:crear_arma' %}" style="--i:3">Crear arma</a>
-       	<a href="{% url 'equipamiento:crear_armadura' %}" style="--i:4">Crear armadura</a>
-       	<a href="{% url 'equipamiento:anadir-item-inventario' %}" style="--i:5">Añadir un item al inventario</a>
-       	<a href="{% url 'equipamiento:equipar_arma' %}" style="--i:6">Equipar arma</a>
-       	<a href="{% url 'equipamiento:equipar_armadura' %}" style="--i:7">Equipar armadura</a>
-       	<a href="{% url 'equipamiento:equipamiento_list' %}" style="--i:8">Lista de objetos</a>
-
-       	<h1>LOCALIZACIONES</h1>
-       	<a href="{% url 'localizaciones:localizacion_list' %}" style="--i:9">Lista de localizaciones</a>
-
-       	<h1>FACCIONES</h1>
-       	<a href="{% url 'facciones:faccion_list' %}" style="--i:10">Lista de facciones</a>
-
-       	<h1>BATALLA</h1>
-       	<a href="{% url 'battle:character_select' %}" style="--i:11">Iniciar una batalla</a>
-
-       	<h1>RELACIONES</h1>
-       	<a href="{% url 'relaciones:relacion_list' %}" style="--i:12">Lista de relaciones</a>
-   	</div>
-   </div>
-
-   <!-- Script to verify images are loading -->
-   <script>
-   	document.addEventListener('DOMContentLoaded', function() {
-       	// Check if background images are loaded
-       	const primaryBg = document.querySelector('.primary-background');
-       	const animatedBg = document.querySelector('.animated-background');
-
-       	// Function to check if an image is loaded successfully
-       	function checkImageLoaded(element, imageUrl) {
-           	const img = new Image();
-           	img.src = imageUrl;
-
-           	img.onload = function() {
-               	console.log('Background image loaded successfully:', imageUrl);
-           	};
-
-           	img.onerror = function() {
-               	console.error('Failed to load background image:', imageUrl);
-               	// Add a fallback background color
-               	element.style.backgroundColor = '#2a1a0a';
-           	};
-       	}
-
-       	// Extract background image URLs
-       	const primaryStyle = getComputedStyle(primaryBg);
-       	const animatedStyle = getComputedStyle(animatedBg);
-
-       	const primaryUrl = primaryStyle.backgroundImage.replace(/url\(['"]?(.*?)['"]?\)/i, '$1');
-       	const animatedUrl = animatedStyle.backgroundImage.replace(/url\(['"]?(.*?)['"]?\)/i, '$1');
-
-       	// Check if images are loading
-       	checkImageLoaded(primaryBg, primaryUrl);
-       	checkImageLoaded(animatedBg, animatedUrl);
-   	});
-   </script>
+    <div class="menu-container">
+        <div class="menu-title">Parking. Menú de Opciones</div>
+        <div class="menu-options">
+            <a href="{% url 'nuevo_coche' %}">1. Introducir nuevo coche</a>
+            <a href="{% url 'listado_coches' %}">2. Listado de coches</a>
+            <a href="{% url 'nueva_entrada' %}">3. Nueva entrada</a>
+            <a href="{% url 'nueva_salida' %}">4. Nueva salida</a>
+            <a href="{% url 'estadisticas_parking' %}">5. Estadísticas parking</a>
+            {% if request.user.perfilusuario.rol == 'admin' %}
+                <a href="{% url 'nuevo_parking' %}">6. Nuevo parking</a>
+                <a href="{% url 'listado_parkings' %}">7. Listado de parkings</a>
+                <a href="{% url 'gestion_usuarios' %}">8. Gestión de usuarios</a>
+            {% else %}
+                <a href="#" style="pointer-events:none;opacity:0.5;background:#ccc;">6. Nuevo parking</a>
+                <a href="{% url 'listado_parkings' %}">7. Listado de parkings</a>
+                <a href="#" style="pointer-events:none;opacity:0.5;background:#ccc;">8. Gestión de usuarios</a>
+            {% endif %}
+            <a href="{% url 'logout' %}" style="background:#c0392b;">Cerrar sesión</a>
+        </div>
+    </div>
 </body>
 </html>

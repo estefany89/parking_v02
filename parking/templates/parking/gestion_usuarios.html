@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Usuarios</title>
+    <style>
+        body {
+            background: #23272f;
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            min-height: 100vh;
+        }
+        .container {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 32px 28px 24px 28px;
+        }
+        h1 {
+            text-align: center;
+            color: #1a3c6b;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 24px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        th {
+            background: #1a3c6b;
+            color: #fff;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Gestión de Usuarios</h1>
+        <div style="text-align:right; margin-bottom:16px;">
+            <a href="{% url 'nuevo_usuario' %}" style="background:#27ae60; color:#fff; padding:8px 18px; border-radius:6px; text-decoration:none; font-weight:600;">
+                + Nuevo usuario
+            </a>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Usuario</th>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Rol</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for usuario in usuarios %}
+                    <tr>
+                        <td>{{ usuario.user.username }}</td>
+                        <td>{{ usuario.user.get_full_name }}</td>
+                        <td>{{ usuario.user.email }}</td>
+                        <td>
+                            {% if usuario.rol == 'admin' %}
+                                Administrador
+                            {% elif usuario.rol == 'operador' %}
+                                Operador
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="4">No hay usuarios registrados.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div style="text-align:center; margin-top:24px;">
+            <a href="{% url 'inicio:mostrar_menu' %}" style="background:#1a3c6b; color:#fff; padding:10px 24px; border-radius:8px; text-decoration:none; font-weight:600;">
+                Volver al menú principal
+            </a>
+        </div>
+    </div>
+</body>
+</html>

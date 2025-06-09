@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Listado de Parkings</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #23272f;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .table-container {
+            background: rgba(255,255,255,0.97);
+            border-radius: 16px;
+            box-shadow: 0 4px 32px rgba(0,0,0,0.25);
+            padding: 40px 30px;
+            max-width: 700px;
+            width: 95%;
+        }
+        h2 {
+            color: #1a3c6b;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 12px 8px;
+            text-align: left;
+        }
+        th {
+            background: #1a3c6b;
+            color: #fff;
+        }
+        tr:nth-child(even) {
+            background: #f2f2f2;
+        }
+        .back-btn {
+            background: #6c757d;
+            color: #fff;
+            width: 100%;
+            padding: 12px 0;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+        }
+        .back-btn:hover {
+            background: #495057;
+            transform: scale(1.03);
+        }
+    </style>
+</head>
+<body>
+    <div class="table-container">
+        <h2>Listado de Parkings</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Ciudad</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for parking in parkings %}
+                <tr>
+                    <td>{{ parking.nombre }}</td>
+                    <td>{{ parking.ciudad }}</td>
+                    <td style="display: flex; gap: 8px;">
+                        <form action="{% url 'ver_parking' parking.pk %}" method="get" style="display:inline;">
+                            <button type="submit" class="back-btn" style="background:#2980b9; margin:0; width:auto; padding:8px 14px;">Ver</button>
+                        </form>
+                        {% if request.user.perfilusuario.rol == 'admin' %}
+                            <form action="{% url 'modificar_parking' parking.pk %}" method="get" style="display:inline;">
+                                <button type="submit" class="back-btn" style="background:#1a3c6b; margin:0; width:auto; padding:8px 14px;">Modificar</button>
+                            </form>
+                            <form action="{% url 'eliminar_parking' parking.pk %}" method="post" style="display:inline;" onsubmit="return confirm('¿Seguro que deseas eliminar este parking?');">
+                                {% csrf_token %}
+                                <button type="submit" class="back-btn" style="background:#c0392b; margin:0; width:auto; padding:8px 14px;">Eliminar</button>
+                            </form>
+                            <form action="{% url 'nueva_plaza' parking.pk %}" method="get" style="display:inline;">
+                                <button type="submit" class="back-btn" style="background:#27ae60; margin:0; width:auto; padding:8px 14px;">Agregar plaza</button>
+                            </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3" style="text-align:center;">No hay parkings registrados.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <form action="/inicio" method="get">
+            <button type="submit" class="back-btn">Volver al menú principal</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>No autorizado</title>
+    <style>
+        body {
+            background: #23272f;
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            min-height: 100vh;
+        }
+        .container {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+            max-width: 400px;
+            margin: 60px auto;
+            padding: 32px 28px 24px 28px;
+            text-align: center;
+        }
+        .icon {
+            font-size: 3em;
+            color: #c0392b;
+            margin-bottom: 18px;
+        }
+        .title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #1a3c6b;
+            margin-bottom: 12px;
+        }
+        .msg {
+            color: #c0392b;
+            margin-bottom: 18px;
+        }
+        .menu-btn {
+            display: block;
+            margin: 18px auto 0 auto;
+            background: #1a3c6b;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 0;
+            width: 100%;
+            font-size: 1em;
+            font-weight: 500;
+            text-align: center;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .menu-btn:hover {
+            background: #274a8e;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">🚫</div>
+        <div class="title">Acceso no autorizado</div>
+        <div class="msg">No tienes permisos para acceder a esta sección.</div>
+    </div>
+    <div style="text-align:center; margin-top:24px;">
+        <a href="{% url 'inicio:mostrar_menu' %}" style="background:#1a3c6b; color:#fff; padding:10px 24px; border-radius:8px; text-decoration:none; font-weight:600;">
+            Volver al menú principal
+        </a>
+    </div>
+</body>
+</html>

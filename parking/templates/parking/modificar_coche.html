@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Modificar Coche</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #23272f;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .form-container {
+            background: rgba(255,255,255,0.95);
+            border-radius: 16px;
+            box-shadow: 0 4px 32px rgba(0,0,0,0.25);
+            padding: 40px 30px;
+            max-width: 400px;
+            width: 90%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .form-title {
+            font-size: 2em;
+            color: #1a3c6b;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        form {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        label {
+            font-weight: 500;
+            color: #1a3c6b;
+            margin-bottom: 3px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #b0b0b0;
+            font-size: 1em;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button[type="submit"], .menu-btn {
+            background: #1a3c6b;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 13px 0;
+            font-size: 1.1em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+            margin-top: 10px;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+        }
+        button[type="submit"]:hover, .menu-btn:hover {
+            background: #285fa8;
+            transform: scale(1.03);
+        }
+        .mensaje {
+            color: green;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        .error {
+            color: red;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        @media (max-width: 600px) {
+            .form-container {
+                padding: 20px 5px;
+            }
+            .form-title {
+                font-size: 1.2em;
+            }
+            button[type="submit"], .menu-btn {
+                font-size: 1em;
+                padding: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <div class="form-title">Modificar coche</div>
+        <form method="post">
+            {% csrf_token %}
+            <label>Matrícula: {{ coche.matricula }}</label>
+            <label for="marca">Marca:</label>
+            <input type="text" id="marca" name="marca" value="{{ coche.marca }}" required>
+            <label for="modelo">Modelo:</label>
+            <input type="text" id="modelo" name="modelo" value="{{ coche.modelo }}" required>
+            <label for="color">Color:</label>
+            <input type="text" id="color" name="color" value="{{ coche.color }}" required>
+            <label for="propietario_nombre">Nombre del propietario:</label>
+            <input type="text" id="propietario_nombre" name="propietario_nombre" value="{{ coche.propietario_nombre }}" required>
+            <label for="propietario_telefono">Teléfono del propietario:</label>
+            <input type="text" id="propietario_telefono" name="propietario_telefono" value="{{ coche.propietario_telefono }}">
+            <button type="submit">Guardar cambios</button>
+        </form>
+        {% if mensaje %}
+            <div class="mensaje">{{ mensaje }}</div>
+        {% endif %}
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+        <a href="/inicio/" class="menu-btn">Volver al menú principal</a>
+    </div>
+</body>
+</html>
